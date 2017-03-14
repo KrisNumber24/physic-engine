@@ -6,46 +6,56 @@ package RenderingEngine;
 
 import Physics.*;
 import processing.core.PApplet;
+import processing.core.PVector;
 
 public class Renderer extends PApplet {
 
-    Mass masses[];
-    Link links[];
-    Simulation simulation = Simulation.getInstance();
+    private Mass masses[];
+    private Link links[];
+    private int windowWidth = 1280;
+    private int windowHeight = 720;
+
+    private Simulation simulation = Simulation.getInstance();
 
     static public void main() {
         PApplet.main("Renderer");
     }
 
     public void setup() {
-        size(1280, 720, P3D);
+        size(windowWidth, windowHeight, P3D);
         background(0, 0, 0);
         smooth();
 
         this.masses = new Mass[10];
         this.links = new Link[9];
 
-        this.masses[0] = new FixedMass(50, 500);
-        this.masses[this.masses.length - 1] = new FixedMass(((this.masses.length - 1) + 1) * 50, 500);
+        int firstPosX = - 4 * 50 - 25;
+
+        this.masses[0] = new FixedMass(firstPosX, 0);
+        this.masses[this.masses.length - 1] = new FixedMass(-firstPosX, 0);
 
         for (int i = 1; i < this.masses.length - 1; i++) {
-            this.masses[i] = new MovingMass((i + 1) * 50, 500);
+            this.masses[i] = new MovingMass(i * 50 + firstPosX, 0);
         }
 
         for (int i = 0; i < this.masses.length - 1; i++) {
             this.links[i] = new Link(masses[i], masses[i + 1]);
         }
-
+        
         simulation.attachContext(this);
         simulation.attachMasses(masses);
         simulation.attachLinks(links);
 
-        masses[1].getPosition().y = 525;
+        masses[1].getPosition().y = 20;
     }
 
     public void  draw() {
         simulation.update();
         clear();
+        translate(windowWidth * 0.5f, windowHeight * 0.5f);
+        if (mousePressed) {
+            rotate(degrees(mouseX * 0.001f), 0, 1, 0);
+        }
         simulation.draw();
     }
 

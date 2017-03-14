@@ -52,7 +52,8 @@ public class Link {
     public void draw(PApplet ctx) {
         ctx.stroke(0, 0, 255);
         ctx.strokeWeight(1.f);
-        ctx.line(m1.getPosition().x, m1.getPosition().y, m2.getPosition().x, m2.getPosition().y);
+        ctx.line(m1.getPosition().x, m1.getPosition().y, m1.getPosition().z,
+                 m2.getPosition().x, m2.getPosition().y, m2.getPosition().z);
     }
 
     public Mass getM1() {

@@ -30,8 +30,9 @@ public class MovingMass extends Mass {
 
     public void draw(PApplet ctx) {
         ctx.strokeWeight(0);
-        ctx.fill(255, 0, 0);
-        ctx.ellipse(position.x, position.y, 10, 10);
+        ctx.stroke(255, 0, 0);
+        ctx.strokeWeight(7);
+        ctx.point(position.x, position.y, position.z);
     }
 
 }

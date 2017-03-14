@@ -22,8 +22,9 @@ public class FixedMass extends Mass {
 
     public void draw(PApplet ctx) {
         ctx.strokeWeight(0);
-        ctx.fill(255, 0, 127);
-        ctx.ellipse(position.x, position.y, 10, 10);
+        ctx.stroke(255, 0, 127);
+        ctx.strokeWeight(10);
+        ctx.point(position.x, position.y, position.z);
     }
 
 }
