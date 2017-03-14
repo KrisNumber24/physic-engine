@@ -12,8 +12,8 @@ public class FixedMass extends Mass {
         super(position);
     }
 
-    public FixedMass(float x, float y) {
-        super(new PVector(x, y));
+    public FixedMass(float x, float y, float z) {
+        super(new PVector(x, y, z));
     }
 
     public void processLeapFrog(float h) {

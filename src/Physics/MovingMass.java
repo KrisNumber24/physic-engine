@@ -12,8 +12,8 @@ public class MovingMass extends Mass {
         super(position);
     }
 
-    public MovingMass(float x, float y) {
-        super(new PVector(x, y));
+    public MovingMass(float x, float y, float z) {
+        super(new PVector(x, y, z));
     }
 
     public void processLeapFrog(float h) {
