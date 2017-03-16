@@ -2,23 +2,23 @@ package Objects;
 
 import Physics.FixedMass;
 import Physics.Link;
+import Physics.SpringLink;
 import Physics.Mass;
 import Physics.MovingMass;
 import processing.core.*;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by Christophe Assante on 16/03/2017.
  */
 public class Curtain extends PhysicObject {
 
-    private PVector position; // curtain-rod's position
-    private int width; // width in particles
-    private int height; // height in particles
-    private int particleSpace; // space between particles
-    private float rotation;
+    protected PVector position; // curtain-rod's position
+    protected int width; // width in particles
+    protected int height; // height in particles
+    protected int particleSpace; // space between particles
+    protected float rotation;
 
     public Curtain(PVector position,int width, int height, int particleSpace) {
         this.position = position;
@@ -59,22 +59,22 @@ public class Curtain extends PhysicObject {
                 }
 
                 if (x > 0) {
-                    links.add(new Link(this.masses[y * this.width + x - 1], this.masses[y * this.width + x]));
+                    links.add(new SpringLink(this.masses[y * this.width + x - 1], this.masses[y * this.width + x]));
                 }
                 if (x > 1) {
-                    links.add(new Link(this.masses[y * this.width + x - 2], this.masses[y * this.width + x]));
+                    links.add(new SpringLink(this.masses[y * this.width + x - 2], this.masses[y * this.width + x]));
                 }
                 if (y > 0) {
-                    links.add(new Link(this.masses[(y - 1) * this.width + x], this.masses[y * this.width + x]));
+                    links.add(new SpringLink(this.masses[(y - 1) * this.width + x], this.masses[y * this.width + x]));
                 }
                 if (y > 1) {
-                    links.add(new Link(this.masses[(y - 2) * this.width + x], this.masses[y * this.width + x]));
+                    links.add(new SpringLink(this.masses[(y - 2) * this.width + x], this.masses[y * this.width + x]));
                 }
                 if (x > 0 && y > 0) {
-                    links.add(new Link(this.masses[(y - 1) * this.width + x - 1], this.masses[y * this.width + x]));
+                    links.add(new SpringLink(this.masses[(y - 1) * this.width + x - 1], this.masses[y * this.width + x]));
                 }
                 if (x < this.width && y > 0) {
-                    links.add(new Link(this.masses[(y - 1) * this.width + x + 1], this.masses[y * this.width + x]));
+                    links.add(new SpringLink(this.masses[(y - 1) * this.width + x + 1], this.masses[y * this.width + x]));
                 }
             }
         }

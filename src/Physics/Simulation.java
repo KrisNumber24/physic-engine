@@ -47,7 +47,9 @@ public class Simulation {
     public void attachPhysicObjects(PhysicObject objs[]) {
         for (PhysicObject obj : objs) {
             for (Link link : obj.getLinks()) {
-                link.setK(this.k);
+                if(link instanceof SpringLink) {
+                    ((SpringLink)link).setK(this.k);
+                }
             }
 
             this.attachPhysicObject(obj);

@@ -4,7 +4,6 @@ import Physics.Link;
 import Physics.Mass;
 import processing.core.PApplet;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
