@@ -8,8 +8,7 @@ import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
 
-import Objects.Curtain;
-import Objects.PhysicObject;
+import Objects.*;
 import Physics.*;
 import processing.core.PApplet;
 import processing.core.PVector;
@@ -32,7 +31,7 @@ public class Renderer extends PApplet {
         background(0, 0, 0);
         smooth();
 
-        this.objects.add(new Curtain(new PVector(0, -200, 0), 30, 30, 10));
+        this.objects.add(new UnfixedCurtain(new PVector(0, -200, 0), 30, 30, 20));
 
         for (PhysicObject object : this.objects) {
             object.setup(this);
