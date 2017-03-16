@@ -12,10 +12,10 @@ public class Simulation {
 
     private Renderer ctx; // Graphic context
 
-    private PVector gravity = new PVector(0, -9.1f, 0);
-    private float fe        = 100;
-    private float h         = 1 / fe;
-    private float alpha     = 0.7f;
+    private PVector gravity = new PVector(0, 9.8f, 0);
+    private float fe        = 50;
+    private float h         = 1/fe;
+    private float alpha     = 0.5f;
     private float k         = alpha * fe * fe;
     private float z         = (float) (alpha / 10.f * fe);
 
