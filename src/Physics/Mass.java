@@ -20,6 +20,8 @@ public abstract class Mass {
 
     public abstract void processLeapFrog(float h);
 
+    public abstract void processGravity(PVector gravity);
+
     public abstract void draw(PApplet ctx);
 
     public PVector getPosition() {

@@ -49,14 +49,16 @@ public class Simulation {
     }
 
     public void update() {
+        for (Link link : links) {
+            link.update();
+            link.getM1().processGravity(gravity);
+            link.getM2().processGravity(gravity);
+        }
+
         for (Mass mass : masses) {
             mass.processLeapFrog(this.h);
         }
 
-        for (Link link : links) {
-            link.processRessort();
-            link.processFrein();
-        }
     }
 
     public void draw() {

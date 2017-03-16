@@ -22,31 +22,38 @@ public class Link {
         this.d0 = m1.getPosition().dist(m2.getPosition());
     }
 
-    public void processRessort() {
+    public void update() {
+        float d = m1.getPosition().dist(m2.getPosition());
+        PVector m1m2 = processRessort();
+        PVector dv = processFrein();
+
+            m1.getForce().sub(m1m2);
+            m2.getForce().add(m1m2);
+
+            m1.getForce().add(dv);
+            m2.getForce().sub(dv);
+    public PVector processRessort() {
         float d = m1.getPosition().dist(m2.getPosition());
 
-        float f = this.k * (1 - this.d0 / d);
+        float f = - this.k * (1 - this.d0 / d);
 
         PVector m1m2 = PVector.sub(m2.getPosition(), m1.getPosition());
 
         m1m2.mult(f);
 
-        m1.getForce().add(m1m2);
-
-        m2.getForce().sub(m1m2);
+        return m1m2;
     }
 
-    public void processFrein() {
+    public PVector processFrein() {
         PVector dv = new PVector(
                 m2.getSpeed().x - m1.getSpeed().x,
                 m2.getSpeed().y - m1.getSpeed().y,
                 m2.getSpeed().z - m2.getSpeed().z
         );
 
-        dv.mult(- this.z);
+        dv.mult(-this.z);
 
-        m1.getForce().sub(dv);
-        m2.getForce().add(dv);
+        return dv;
     }
 
     public void draw(PApplet ctx) {

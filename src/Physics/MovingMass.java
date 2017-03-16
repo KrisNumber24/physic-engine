@@ -13,7 +13,7 @@ public class MovingMass extends Mass {
     }
 
     public MovingMass(float x, float y, float z) {
-        super(new PVector(x, y, z));
+        this(new PVector(x, y, z));
     }
 
     public void processLeapFrog(float h) {
@@ -26,6 +26,10 @@ public class MovingMass extends Mass {
         this.position.add(PVector.mult(this.speed, h));
 
         this.force.mult(0);
+    }
+
+    public void processGravity(PVector gravity) {
+        this.force.add(gravity);
     }
 
     public void draw(PApplet ctx) {
