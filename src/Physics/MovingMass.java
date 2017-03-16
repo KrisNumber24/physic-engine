@@ -35,7 +35,7 @@ public class MovingMass extends Mass {
     public void draw(PApplet ctx) {
         ctx.strokeWeight(0);
         ctx.stroke(255, 0, 0);
-        ctx.strokeWeight(7);
+        ctx.strokeWeight(0);
         ctx.point(position.x, position.y, position.z);
     }
 

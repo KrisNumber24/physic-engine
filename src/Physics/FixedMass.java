@@ -23,10 +23,11 @@ public class FixedMass extends Mass {
     public void processGravity(PVector gravity) {
         this.force.add(0, 0, 0);
     }
+
     public void draw(PApplet ctx) {
         ctx.strokeWeight(0);
-        ctx.stroke(255, 0, 127);
-        ctx.strokeWeight(10);
+        ctx.stroke(0, 100, 200);
+        ctx.strokeWeight(5);
         ctx.point(position.x, position.y, position.z);
     }
 
