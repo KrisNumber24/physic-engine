@@ -4,6 +4,7 @@
 
 package RenderingEngine;
 
+import java.awt.event.MouseEvent;
 import Physics.*;
 import processing.core.PApplet;
 import processing.core.PVector;
@@ -14,6 +15,7 @@ public class Renderer extends PApplet {
     private Link links[];
     private int windowWidth = 1280;
     private int windowHeight = 720;
+    private float camRotation = 0;
 
     private Simulation simulation = Simulation.getInstance();
 
@@ -50,13 +52,17 @@ public class Renderer extends PApplet {
     }
 
     public void  draw() {
+        camRotation += 0.00005;
         simulation.update();
         clear();
         translate(windowWidth * 0.5f, windowHeight * 0.5f);
-        if (mousePressed) {
-            rotate(degrees(mouseX * 0.001f), 0, 1, 0);
-        }
+        rotate(degrees(camRotation), 0, 1, 0);
         simulation.draw();
     }
 
+    @Override
+    public void mouseDragged(MouseEvent e) {
+        super.mouseDragged(e);
+        camRotation = emouseX * 0.001f;
+    }
 }
