@@ -5,6 +5,9 @@
 package RenderingEngine;
 
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
+import java.util.List;
+
 import Physics.*;
 import processing.core.PApplet;
 import processing.core.PVector;
@@ -12,7 +15,7 @@ import processing.core.PVector;
 public class Renderer extends PApplet {
 
     private Mass masses[];
-    private Link links[];
+    private List<Link> links;
     private int windowWidth = 1280;
     private int windowHeight = 720;
     private float camRotation = 0;
@@ -28,27 +31,48 @@ public class Renderer extends PApplet {
         background(0, 0, 0);
         smooth();
 
-        this.masses = new Mass[10];
-        this.links = new Link[9];
 
-        int firstPosX = - 4 * 50 - 25;
+        int flagWidth =     50;
+        int flagHeight =    48;
+        int flagCenterX =   flagWidth / 2;
+        int flagCenterY =   flagHeight / 2;
+        int flagSpace =     10;
 
-        this.masses[0] = new FixedMass(firstPosX, 0);
-        this.masses[this.masses.length - 1] = new FixedMass(-firstPosX, 0);
+        int firstPosX =  0; //- flagCenterX * flagSpace + flagSpace / 2;
+        int firstPosY =  -200;  //- flagCenterY * flagSpace  + flagSpace / 2;
 
-        for (int i = 1; i < this.masses.length - 1; i++) {
-            this.masses[i] = new MovingMass(i * 50 + firstPosX, 0);
+        this.masses = new Mass[flagHeight * flagWidth];
+        this.links = new ArrayList<Link>();
+
+        for (int y = 0; y < flagHeight; y ++) {
+            for (int x = 0; x < flagWidth; x ++) {
+
+                int massPosX = firstPosX + x * flagSpace;
+                int massPosy = firstPosY + y * flagSpace;
+
+                if (x == 0) {
+                    FixedMass tmpMass = new FixedMass(massPosX, firstPosY, massPosy);
+                    this.masses[y * flagWidth + x] = tmpMass;
+                }
+                else {
+                    MovingMass tmpMass = new MovingMass(massPosX, firstPosY, massPosy);
+                    this.masses[y * flagWidth + x] = tmpMass;
+                }
+
+                if (x > 0) {
+                    links.add(new Link(this.masses[y * flagWidth + x - 1], this.masses[y * flagWidth + x]));
+                }
+                if (y > 0) {
+                    links.add(new Link(this.masses[(y - 1) * flagWidth + x], this.masses[y * flagWidth + x]));
+                }
+            }
         }
 
-        for (int i = 0; i < this.masses.length - 1; i++) {
-            this.links[i] = new Link(masses[i], masses[i + 1]);
-        }
-        
         simulation.attachContext(this);
         simulation.attachMasses(masses);
-        simulation.attachLinks(links);
+        simulation.attachLinks(links.toArray(new Link[links.size()]));
 
-        masses[1].getPosition().y = 20;
+        //masses[1].getPosition().y = 20;
     }
 
     public void  draw() {
