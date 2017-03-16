@@ -15,6 +15,7 @@ public class Link {
     private float   z; // I suppose it would be elasticity or something ...
     private float   k; // No idea of what it is ...
     private PVector force;
+    private float   epsilon = 0.001f;
 
     public Link(Mass m1, Mass m2) {
         this.m1 = m1;
@@ -27,11 +28,37 @@ public class Link {
         PVector m1m2 = processRessort();
         PVector dv = processFrein();
 
+        if (Math.abs(d - d0) > epsilon) {
+
             m1.getForce().sub(m1m2);
             m2.getForce().add(m1m2);
 
             m1.getForce().add(dv);
             m2.getForce().sub(dv);
+        }
+        else {
+            if (m1.getForce().x > m2.getForce().x
+             && m1.getForce().y > m2.getForce().y
+             && m1.getForce().z > m2.getForce().z) {
+
+                m2.getForce().set(0,0,0);
+            }
+            else {
+                m1.getForce().set(0,0,0);
+            }
+
+            if (m1.getSpeed().x > m2.getSpeed().x
+             && m1.getSpeed().y > m2.getSpeed().y
+             && m1.getSpeed().z > m2.getSpeed().z) {
+
+                m2.getSpeed().set(0,0,0);
+            }
+            else {
+                m1.getSpeed().set(0,0,0);
+            }
+        }
+    }
+
     public PVector processRessort() {
         float d = m1.getPosition().dist(m2.getPosition());
 
