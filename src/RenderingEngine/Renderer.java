@@ -8,19 +8,20 @@ import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
 
+import Objects.Curtain;
+import Objects.PhysicObject;
 import Physics.*;
 import processing.core.PApplet;
 import processing.core.PVector;
 
 public class Renderer extends PApplet {
 
-    private Mass masses[];
-    private List<Link> links;
     private int windowWidth = 1280;
     private int windowHeight = 720;
     private float camRotation = 0;
 
     private Simulation simulation = Simulation.getInstance();
+    private ArrayList<PhysicObject> objects = new ArrayList<PhysicObject>();
 
     static public void main() {
         PApplet.main("Renderer");
@@ -31,48 +32,17 @@ public class Renderer extends PApplet {
         background(0, 0, 0);
         smooth();
 
+        this.objects.add(new Curtain(new PVector(0, -200, 0), 30, 30, 10));
 
-        int flagWidth =     50;
-        int flagHeight =    48;
-        int flagCenterX =   flagWidth / 2;
-        int flagCenterY =   flagHeight / 2;
-        int flagSpace =     10;
-
-        int firstPosX =  0; //- flagCenterX * flagSpace + flagSpace / 2;
-        int firstPosY =  -200;  //- flagCenterY * flagSpace  + flagSpace / 2;
-
-        this.masses = new Mass[flagHeight * flagWidth];
-        this.links = new ArrayList<Link>();
-
-        for (int y = 0; y < flagHeight; y ++) {
-            for (int x = 0; x < flagWidth; x ++) {
-
-                int massPosX = firstPosX + x * flagSpace;
-                int massPosy = firstPosY + y * flagSpace;
-
-                if (x == 0) {
-                    FixedMass tmpMass = new FixedMass(massPosX, firstPosY, massPosy);
-                    this.masses[y * flagWidth + x] = tmpMass;
-                }
-                else {
-                    MovingMass tmpMass = new MovingMass(massPosX, firstPosY, massPosy);
-                    this.masses[y * flagWidth + x] = tmpMass;
-                }
-
-                if (x > 0) {
-                    links.add(new Link(this.masses[y * flagWidth + x - 1], this.masses[y * flagWidth + x]));
-                }
-                if (y > 0) {
-                    links.add(new Link(this.masses[(y - 1) * flagWidth + x], this.masses[y * flagWidth + x]));
-                }
-            }
+        for (PhysicObject object : this.objects) {
+            object.setup(this);
         }
 
         simulation.attachContext(this);
-        simulation.attachMasses(masses);
-        simulation.attachLinks(links.toArray(new Link[links.size()]));
+        simulation.attachPhysicObjects(this.objects.toArray(new PhysicObject[this.objects.size()]));
 
-        //masses[1].getPosition().y = 20;
+//        this.objects.get(0).getLinks().get(105).getM1().getPosition().y += 100;
+//        System.out.println("Point 45 => d0 = " + this.objects.get(0).getLinks().get(105).getD0() + " - d = " + this.objects.get(0).getLinks().get(105).getM1().getPosition().dist(this.objects.get(0).getLinks().get(105).getM2().getPosition()));
     }
 
     public void  draw() {
@@ -81,7 +51,7 @@ public class Renderer extends PApplet {
         clear();
         translate(windowWidth * 0.5f, windowHeight * 0.5f);
         rotate(degrees(camRotation), 0, 1, 0);
-        simulation.draw();
+        simulation.draw(this);
     }
 
     @Override

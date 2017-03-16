@@ -1,7 +1,11 @@
 package Physics;
 
+import Objects.PhysicObject;
 import RenderingEngine.Renderer;
+import processing.core.PApplet;
 import processing.core.PVector;
+
+import java.util.ArrayList;
 
 /**
  * Created by Christophe on 13/03/2017.
@@ -15,12 +19,11 @@ public class Simulation {
     private PVector gravity = new PVector(0, 9.8f, 0);
     private float fe        = 50;
     private float h         = 1/fe;
-    private float alpha     = 0.5f;
+    private float alpha     = 0.2f;
     private float k         = alpha * fe * fe;
-    private float z         = (float) (alpha / 10.f * fe);
+    private float z         = (float) (alpha / 20.f * fe);
 
-    private Mass masses[];
-    private Link links[];
+    private ArrayList<PhysicObject> objects = new ArrayList<PhysicObject>();
 
     private Simulation() {
 
@@ -37,37 +40,39 @@ public class Simulation {
         this.ctx = ctx;
     }
 
-    public void attachMasses(Mass[] masses) {
-        this.masses = masses;
+    public void attachPhysicObject(PhysicObject obj) {
+        this.objects.add(obj);
     }
 
-    public void attachLinks(Link[] links) {
-        this.links = links;
-        for (Link link : this.links) {
-            link.setK(this.k);
+    public void attachPhysicObjects(PhysicObject objs[]) {
+        for (PhysicObject obj : objs) {
+            for (Link link : obj.getLinks()) {
+                link.setK(this.k);
+            }
+
+            this.attachPhysicObject(obj);
         }
+
     }
 
     public void update() {
-        for (Link link : links) {
-            link.update();
-            link.getM1().processGravity(gravity);
-            link.getM2().processGravity(gravity);
-        }
+        for (PhysicObject object : this.objects){
 
-        for (Mass mass : masses) {
-            mass.processLeapFrog(this.h);
-        }
+            for (Link link : object.getLinks()) {
+                link.update();
+                link.getM1().processGravity(gravity);
+                link.getM2().processGravity(gravity);
+            }
 
+            for (Mass mass : object.getMasses()) {
+                mass.processLeapFrog(this.h);
+            }
+        }
     }
 
-    public void draw() {
-        for (Link link : links) {
-            link.draw(ctx);
-        }
-
-        for (Mass mass : masses) {
-            mass.draw(ctx);
+    public void draw(PApplet ctx){
+        for (PhysicObject object : this.objects) {
+            object.draw(ctx);
         }
     }
 
@@ -109,21 +114,5 @@ public class Simulation {
 
     public void setZ(float z) {
         this.z = z;
-    }
-
-    public Mass[] getMasses() {
-        return masses;
-    }
-
-    public void setMasses(Mass[] masses) {
-        this.masses = masses;
-    }
-
-    public Link[] getLinks() {
-        return links;
-    }
-
-    public void setLinks(Link[] links) {
-        this.links = links;
     }
 }
