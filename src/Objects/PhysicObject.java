@@ -13,7 +13,7 @@ import java.util.List;
 public abstract class PhysicObject {
 
     protected Mass masses[];
-    protected ArrayList<Link> links;
+    protected ArrayList<Link> links = new ArrayList<Link>();
 
     public abstract void initMesh();
 

@@ -32,6 +32,10 @@ public class Renderer extends PApplet {
         smooth();
 
         this.objects.add(new UnfixedCurtain(new PVector(0, -200, 0), 30, 30, 20));
+        Sphere obstacle = new Sphere(new PVector(250,0,0), 100);
+        this.objects.add(obstacle);
+
+        obstacle.attachObject(this.objects.get(0));
 
         for (PhysicObject object : this.objects) {
             object.setup(this);

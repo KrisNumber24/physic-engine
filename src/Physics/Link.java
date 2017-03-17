@@ -10,6 +10,11 @@ public abstract class Link {
     protected Mass    m1;
     protected Mass    m2;
 
+    Link() {
+        this.m1 = null;
+        this.m2 = null;
+    }
+
     public Link(Mass m1, Mass m2) {
         this.m1 = m1;
         this.m2 = m2;
@@ -18,8 +23,6 @@ public abstract class Link {
     public abstract void update();
 
     public void draw(PApplet ctx) {
-        ctx.stroke(125, 125, 125);
-        ctx.strokeWeight(1.f);
         ctx.line(m1.getPosition().x, m1.getPosition().y, m1.getPosition().z,
                 m2.getPosition().x, m2.getPosition().y, m2.getPosition().z);
     }

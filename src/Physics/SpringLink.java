@@ -80,6 +80,13 @@ public class SpringLink extends Link {
         return dv;
     }
 
+    @Override
+    public void draw(PApplet ctx) {
+        ctx.stroke(125, 125, 125);
+        ctx.strokeWeight(1.f);
+        super.draw(ctx);
+    }
+
     public float getD0() {
         return d0;
     }
